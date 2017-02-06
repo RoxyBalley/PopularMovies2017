@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Popular-Movies</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_detail">DetailActivity</string>
+    <string-array name="sort_options">
+        <item>Popular</item>
+        <item>Top Rated</item>
+    </string-array>
+
+    <string name="movies_collection_item_poster_content_description">Movie poster image.</string>
+
+
+</resources>

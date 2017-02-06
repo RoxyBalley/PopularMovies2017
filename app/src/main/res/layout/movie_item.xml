@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/movies_collection_item_root_view"
+    style="@style/movies_collection_item_background">
+
+    <ImageView
+        android:id="@+id/movies_collection_item_poster"
+        style="@style/movies_collection_item_poster"
+        android:contentDescription="@string/movies_collection_item_poster_content_description"
+        />
+
+<!--    <TextView
+        android:id="@+id/movie_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/text_size"
+        android:padding="@dimen/text_padding"
+        android:gravity="center|start"
+        android:ellipsize="end"/>-->
+
+</RelativeLayout>
