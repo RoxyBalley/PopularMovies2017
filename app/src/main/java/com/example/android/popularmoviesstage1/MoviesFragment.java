@@ -29,9 +29,9 @@ import java.util.ArrayList;
  */
 public class MoviesFragment extends Fragment {
 
-    public final String LOGCAT = MoviesFragment.class.getSimpleName();
-    public String sortBy = null;
-    GridView gridView;
+    private final String LOGCAT = MoviesFragment.class.getSimpleName();
+    private String sortBy = null;
+    private GridView gridView;
     private MoviesAdapter moviesAdapter;
     public MoviesFragment() {
     }
@@ -190,7 +190,6 @@ public class MoviesFragment extends Fragment {
 
             final MovieItem[] resultStrs = new MovieItem[moviesArray.length()];
             for (int i = 0; i < moviesArray.length(); i++) {
-                String title, posterPath;
                 // Get the JSON object representing one movie
                 JSONObject movieObject = moviesArray.getJSONObject(i);
                 resultStrs[i] = new MovieItem(movieObject.getString(OWN_POSTER), movieObject.getString(OWM_OVERVIEW), movieObject.getString(OWM_RELEASE_DATE),

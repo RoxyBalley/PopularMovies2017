@@ -3,11 +3,11 @@ package com.example.android.popularmoviesstage1;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class PreferencesHelper {
+class PreferencesHelper {
 
     public static final String KEY_SORT = "sort_key";
     private static final String FILE_NAME = "com.example.android.popularmoviesstage1.prefs";
-    private SharedPreferences prefs;
+    private final SharedPreferences prefs;
 
     public PreferencesHelper(Context context) {
         prefs = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);

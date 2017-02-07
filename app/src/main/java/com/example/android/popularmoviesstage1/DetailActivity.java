@@ -2,11 +2,10 @@ package com.example.android.popularmoviesstage1;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.app.AppCompatActivity;
 
 
-public class DetailActivity extends ActionBarActivity {
+public class DetailActivity extends AppCompatActivity {
 
     //Tag for passing as a parcelable
     public static final String EXTRA_MOVIE = "extra_movie";

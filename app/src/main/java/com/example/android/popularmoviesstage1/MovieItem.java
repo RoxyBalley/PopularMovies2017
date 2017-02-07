@@ -1,6 +1,5 @@
 package com.example.android.popularmoviesstage1;
 
-import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -57,9 +56,11 @@ public class MovieItem implements Parcelable {       //Parcel
         dest.writeString(mVoteAverage);
     }
 
-    public String getId() {
-        return mId;
-    }
+// --Commented out by Inspection START (08/02/17, 1:48 AM):
+//    public String getId() {
+//        return mId;
+//    }
+// --Commented out by Inspection STOP (08/02/17, 1:48 AM)
 
     public String getOriginalTitle() {
         return mOriginalTitle;
