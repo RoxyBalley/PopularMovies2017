@@ -15,15 +15,18 @@ import android.widget.Switch;
 import com.squareup.picasso.Picasso;
 
 /**
- * Created by abs on 9/29/2016.
- */
-
-/**
  * A placeholder fragment containing a simple view.
  */
 public class DetailFragment extends Fragment {
     private static final String ARG_MOVIE = DetailFragment.class.getSimpleName() + "movie";
     private MovieItem movie;
+
+    /**
+     * Empty constructor for system creation.
+     */
+    public DetailFragment() {
+        setHasOptionsMenu(true);
+    }
 
     public static DetailFragment newInstance(final MovieItem movie) {
         final DetailFragment fragment = new DetailFragment();
@@ -31,13 +34,6 @@ public class DetailFragment extends Fragment {
         args.putParcelable(ARG_MOVIE, movie);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    /**
-     * Empty constructor for system creation.
-     */
-    public DetailFragment() {
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -52,13 +48,13 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
-        ((TextView)rootView.findViewById(R.id.movie_title)).setText(movie.getOriginalTitle());
-        ((TextView)rootView.findViewById(R.id.movie_vote_avg)).setText(movie.getVoteAverage());
-        ((TextView)rootView.findViewById(R.id.movie_overview)).setText(movie.getOverview());
-        ((TextView)rootView.findViewById(R.id.movie_release_date)).setText(movie.getReleaseDate(true));
+        ((TextView) rootView.findViewById(R.id.movie_title)).setText(movie.getOriginalTitle());
+        ((TextView) rootView.findViewById(R.id.movie_vote_avg)).setText(movie.getVoteAverage());
+        ((TextView) rootView.findViewById(R.id.movie_overview)).setText(movie.getOverview());
+        ((TextView) rootView.findViewById(R.id.movie_release_date)).setText(movie.getReleaseDate(true));
         String url = movie.getPosterPath();
-        ImageView imageView = (ImageView)rootView.findViewById(R.id.movie_image_detail);
-        Picasso.with(getActivity()).load(url).into(imageView);
+        ImageView imageView = (ImageView) rootView.findViewById(R.id.movie_poster_image);
+        Picasso.with(getActivity()).load(url).placeholder(R.mipmap.ic_launcher).into(imageView);
 
         return rootView;
     }

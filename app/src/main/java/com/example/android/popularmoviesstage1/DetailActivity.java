@@ -5,10 +5,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-/**
- * Created by abs on 9/29/2016.
- */
-
 
 public class DetailActivity extends ActionBarActivity {
 

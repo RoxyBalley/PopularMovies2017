@@ -1,6 +1,5 @@
 package com.example.android.popularmoviesstage1;
 
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
@@ -23,17 +22,17 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import com.example.android.popularmoviesstage1.MainActivity;
 
-/**
- * Created by abs on 9/29/2016.
- */
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class MoviesFragment extends Fragment {
 
+    public final String LOGCAT = MoviesFragment.class.getSimpleName();
+    public String sortBy = null;
+    GridView gridView;
+    private MoviesAdapter moviesAdapter;
     public MoviesFragment() {
     }
 
@@ -44,41 +43,33 @@ public class MoviesFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-    public final String LOGCAT = MoviesFragment.class.getSimpleName();
-    private MoviesAdapter moviesAdapter;
-    public int MAX_PAGES = 10;
-    private int mPage = 0;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         moviesAdapter = new MoviesAdapter(getActivity(), R.layout.movie_item, new ArrayList<MovieItem>());
-        GridView gridView = (GridView) rootView.findViewById(R.id.movie_collection_recycler_view);
+        gridView = (GridView) rootView.findViewById(R.id.grid_layout);
         gridView.setAdapter(moviesAdapter);
+        updateData();
+        if (savedInstanceState == null) {
+            Log.v(LOGCAT, "No saved instance stage--------------");
+        } else {
+            Log.v(LOGCAT, "Has saved instance stage---------------");
+        }
+        return rootView;
+    }
 
-/*        SharedPreferences sharedPref = getActivity().getSharedPreferences("FileName", getActivity().MODE_PRIVATE);
-        int spinnerValue = sharedPref.getInt("userChoiceSpinner",-1);
-        if(spinnerValue != -1){
-            switch (spinnerValue){
-                case 0: String sort_by = "popularity.desc";
-                    break;
-                case 1: sort_by = "vote_average.desc";
-                    break;
-                default: break;
-            }
-        }*/
-        //String sort_by = this.getArguments().getString("sort_key");
+    /**
+     * DetailFragmentCallback for when an item has been selected.
+     */
 
-  /*      SharedPreferences settings = getActivity().getPreferences(getActivity().MODE_PRIVATE);
-            String restoredText = settings.getString("sort", null);
-            if (restoredText != null) {
-                sort_by = restoredText;
-            }*/
+    public void updateData() {
+        PreferencesHelper prefs = new PreferencesHelper(getActivity());
+        sortBy = prefs.loadString(PreferencesHelper.KEY_SORT, null);
 
-        FetchMoviesTask fetchMovie = new FetchMoviesTask();
-        fetchMovie.execute("81acee672bd444827fa5abca3f5055da");
+        fetchMoviesTask fetchMovie = new fetchMoviesTask();
+        fetchMovie.execute(BuildConfig.MOVIE_DB_API_KEY);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -86,22 +77,8 @@ public class MoviesFragment extends Fragment {
                 ((Callback) getActivity()).onItemSelected(movieDetails);
             }
         });
-        if (savedInstanceState == null) {
-            Log.v(LOGCAT,"No saved instance stage--------------");
-        }
-        else{Log.v(LOGCAT,"Has saved instance stage---------------");}
-        return rootView;
     }
 
-
-
-    /**
-     * DetailFragmentCallback for when an item has been selected.
-     */
-      /*  public interface Callback{
-        //called when item selected in gridView
-        void onItemSelected(MovieItem movieItem);
-    }*/
     public interface Callback {
 
         /**
@@ -110,25 +87,17 @@ public class MoviesFragment extends Fragment {
          * @param movie the selected movie
          */
         void onItemSelected(MovieItem movie);
-        // String selectSortBy(String sortParameter);
-
     }
 
-    public class FetchMoviesTask extends AsyncTask<String, Void, MovieItem[]> {
-        public final String LOG_TAG = FetchMoviesTask.class.getSimpleName();
-
+    public class fetchMoviesTask extends AsyncTask<String, Void, MovieItem[]> {
+        public final String LOG_TAG = fetchMoviesTask.class.getSimpleName();
 
         @Override
         protected MovieItem[] doInBackground(final String... params) {
-
+            // Verify size of params.
             if (params.length == 0) {
                 return null;
             }
-            if(mPage <= MAX_PAGES) {
-                mPage += 1;
-            }
-            int page = mPage;
-
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
@@ -137,38 +106,22 @@ public class MoviesFragment extends Fragment {
             String MoviesJSONStr = null;
 
             try {
-                String sort_by = "popularity.desc";/*
-                SharedPreferences sharedPref = getActivity().getSharedPreferences("FileName", getActivity().MODE_PRIVATE);
-                int spinnerValue = sharedPref.getInt("userChoiceSpinner",-1);
-                if(spinnerValue != -1){
-                    switch (spinnerValue){
-                        case 0: sort_by = "popularity.desc";
-                            break;
-                        case 1: sort_by = "vote_average.desc";
-                            break;
-                        default: break;
-                    }
-                }*/
-/*                SharedPreferences settings = getActivity().getPreferences(getActivity().MODE_PRIVATE);
-                String restoredText = settings.getString("sort","popularity.desc");
-                if (restoredText != null) {
-                    sort_by = restoredText;
-                }*/
+                // Construct the URL for the TheMovieDB query
+                String BASE_URL = "http://api.themoviedb.org/3/movie/popular?";
+                if (sortBy.equals("popular")) {
+                    BASE_URL = "http://api.themoviedb.org/3/movie/popular?";
+                } else if (sortBy.equals("top_rated")) {
+                    BASE_URL = "http://api.themoviedb.org/3/movie/top_rated?";
+                }
 
-                // Construct the URL for the Movie query
-                final String FORECAST_BASE_URL = "https://api.themoviedb.org/3/discover/movie?";
                 final String APPID_PARAM = "api_key";
-                final String PAGE = "page";
-                final String SORT_BY = "sort_by";
 
-                Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
-                        .appendQueryParameter(PAGE, String.valueOf(page))
+                Uri builtUri = Uri.parse(BASE_URL).buildUpon()
                         .appendQueryParameter(APPID_PARAM, BuildConfig.MOVIE_DB_API_KEY)
-                        .appendQueryParameter(SORT_BY,sort_by )
                         .build();
                 URL url = new URL(builtUri.toString());
 
-                // Create the request to OpenWeatherMap, and open the connection
+                // Create the request to TMDB, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.connect();
@@ -197,7 +150,7 @@ public class MoviesFragment extends Fragment {
                 MoviesJSONStr = buffer.toString();
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Error ", e);
-                // If the code didn't successfully get the weather data, there's no point in attemping
+                // If the code didn't successfully get the movie data, there's no point in attempting
                 // to parse it.
                 return null;
             } finally {
@@ -219,11 +172,11 @@ public class MoviesFragment extends Fragment {
                 Log.e(LOG_TAG, e.getMessage(), e);
                 e.printStackTrace();
             }
-            // This will only happen if there was an error getting or parsing the forecast.
+            // This will only happen if there was an error getting or parsing the movie data.
             return null;
         }
 
-        public MovieItem[] getMoviesFromJson(String MoviesJSONStr ) throws JSONException{
+        public MovieItem[] getMoviesFromJson(String MoviesJSONStr) throws JSONException {
             final String OWN_RESULTS = "results";
             final String OWN_ID = "id";
             final String OWN_POSTER = "poster_path";
@@ -236,16 +189,17 @@ public class MoviesFragment extends Fragment {
             JSONArray moviesArray = moviesJson.getJSONArray(OWN_RESULTS);
 
             final MovieItem[] resultStrs = new MovieItem[moviesArray.length()];
-            for(int i = 0; i < moviesArray.length(); i++){
+            for (int i = 0; i < moviesArray.length(); i++) {
                 String title, posterPath;
                 // Get the JSON object representing one movie
                 JSONObject movieObject = moviesArray.getJSONObject(i);
-                resultStrs[i] = new MovieItem( movieObject.getString(OWN_POSTER), movieObject.getString(OWM_OVERVIEW), movieObject.getString(OWM_RELEASE_DATE),
+                resultStrs[i] = new MovieItem(movieObject.getString(OWN_POSTER), movieObject.getString(OWM_OVERVIEW), movieObject.getString(OWM_RELEASE_DATE),
                         movieObject.getString(OWN_ID), movieObject.getString(OWN_TITLE), movieObject.getString(OWM_VOTE_AVERAGE));
                 Log.v(LOG_TAG, "Popular movies string array: " + resultStrs);
             }
             return resultStrs;
         }
+
         @Override
         protected void onPostExecute(MovieItem[] result) {
             if (result != null) {
