@@ -8,6 +8,8 @@
         <item>Popular</item>
         <item>Top Rated</item>
     </string-array>
+
+    <string name="toast_onItemSelected">Showing : </string>
     <string name="movies_collection_item_poster_content_description">Movie poster image.</string>
     <string name="movies_detail_poster_content_description">Movie Poster Image.</string>
 
