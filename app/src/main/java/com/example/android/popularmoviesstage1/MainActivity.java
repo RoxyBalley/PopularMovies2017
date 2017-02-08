@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.Ca
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(parent.getContext(),
-                        "On Item Select : \n" + parent.getItemAtPosition(position).toString(),
+                        R.string.toast_onItemSelected + parent.getItemAtPosition(position).toString(),
                         Toast.LENGTH_LONG).show();
                 PreferencesHelper prefs = new PreferencesHelper(parent.getContext());
                 prefs.save(PreferencesHelper.KEY_SORT, position);
