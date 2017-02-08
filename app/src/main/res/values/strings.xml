@@ -2,13 +2,13 @@
     <string name="app_name">Popular-Movies</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_detail">DetailActivity</string>
+    <string name="title_activity_detail">Movie Detail</string>
     <string name="spinner_title">ActionBar Spinner</string>
     <string-array name="sort_options">
         <item>Popular</item>
         <item>Top Rated</item>
     </string-array>
-
+    <string name="toast_onItemSelected">Showing : </string>
     <string name="movies_collection_item_poster_content_description">Movie poster image.</string>
     <string name="movies_detail_poster_content_description">Movie Poster Image.</string>
 
