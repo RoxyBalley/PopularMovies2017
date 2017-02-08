@@ -66,7 +66,7 @@ public class MoviesFragment extends Fragment {
 
     public void updateData() {
         PreferencesHelper prefs = new PreferencesHelper(getActivity());
-        sortBy = prefs.loadString(PreferencesHelper.KEY_SORT, null);
+        sortBy = prefs.loadString(PreferencesHelper.KEY_SORT, "popular");
 
         fetchMoviesTask fetchMovie = new fetchMoviesTask();
         fetchMovie.execute(BuildConfig.MOVIE_DB_API_KEY);

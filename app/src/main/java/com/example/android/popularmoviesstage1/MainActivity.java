@@ -2,7 +2,6 @@ package com.example.android.popularmoviesstage1;
 
 import android.content.Intent;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -58,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.Ca
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(parent.getContext(),
-                        "On Item Select : \n" + parent.getItemAtPosition(position).toString(),
+                        "Showing: "+ parent.getItemAtPosition(position).toString(),
                         Toast.LENGTH_LONG).show();
                 PreferencesHelper prefs = new PreferencesHelper(parent.getContext());
                 prefs.save(PreferencesHelper.KEY_SORT, position);
