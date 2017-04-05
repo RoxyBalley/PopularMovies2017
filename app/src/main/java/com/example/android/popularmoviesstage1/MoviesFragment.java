@@ -68,7 +68,7 @@ public class MoviesFragment extends Fragment {
         PreferencesHelper prefs = new PreferencesHelper(getActivity());
         sortBy = prefs.loadString(PreferencesHelper.KEY_SORT, "popular");
 
-        fetchMoviesTask fetchMovie = new fetchMoviesTask();
+        FetchMoviesTask fetchMovie = new FetchMoviesTask();
         fetchMovie.execute(BuildConfig.MOVIE_DB_API_KEY);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -89,8 +89,8 @@ public class MoviesFragment extends Fragment {
         void onItemSelected(MovieItem movie);
     }
 
-    public class fetchMoviesTask extends AsyncTask<String, Void, MovieItem[]> {
-        public final String LOG_TAG = fetchMoviesTask.class.getSimpleName();
+    public class FetchMoviesTask extends AsyncTask<String, Void, MovieItem[]> {
+        public final String LOG_TAG = FetchMoviesTask.class.getSimpleName();
 
         @Override
         protected MovieItem[] doInBackground(final String... params) {
@@ -180,6 +180,7 @@ public class MoviesFragment extends Fragment {
             final String OWN_RESULTS = "results";
             final String OWN_ID = "id";
             final String OWN_POSTER = "poster_path";
+            final String OWN_BACKDROP = "backdrop_path";
             final String OWN_TITLE = "original_title";
             final String OWM_OVERVIEW = "overview";
             final String OWM_VOTE_AVERAGE = "vote_average";
@@ -192,7 +193,7 @@ public class MoviesFragment extends Fragment {
             for (int i = 0; i < moviesArray.length(); i++) {
                 // Get the JSON object representing one movie
                 JSONObject movieObject = moviesArray.getJSONObject(i);
-                resultStrs[i] = new MovieItem(movieObject.getString(OWN_POSTER), movieObject.getString(OWM_OVERVIEW), movieObject.getString(OWM_RELEASE_DATE),
+                resultStrs[i] = new MovieItem(movieObject.getString(OWN_POSTER),movieObject.getString(OWN_BACKDROP), movieObject.getString(OWM_OVERVIEW), movieObject.getString(OWM_RELEASE_DATE),
                         movieObject.getString(OWN_ID), movieObject.getString(OWN_TITLE), movieObject.getString(OWM_VOTE_AVERAGE));
                 Log.v(LOG_TAG, "Popular movies string array: " + resultStrs);
             }

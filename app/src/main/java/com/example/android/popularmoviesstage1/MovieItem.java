@@ -19,13 +19,16 @@ public class MovieItem implements Parcelable {       //Parcel
     private static final String BaseUrlImage = "http://image.tmdb.org/t/p/";
     private static final String UrlImageSize = "w500/";
     private final String mPosterPath;
+    private final String mBackdropPath;
     private final String mOverview;
     private final String mReleaseDate;
     private final String mId;
     private final String mOriginalTitle;
     private final String mVoteAverage;
-    public MovieItem(final String posterPath, final String overview, final String releaseDate, final String id, final String originalTitle, final String voteAverage) {
+    public MovieItem(final String posterPath, final String backdropPath, final String overview, final String releaseDate,
+                     final String id, final String originalTitle, final String voteAverage) {
         mPosterPath = BaseUrlImage + UrlImageSize + posterPath;
+        mBackdropPath = BaseUrlImage + UrlImageSize + backdropPath;
         mOverview = overview;
         mReleaseDate = releaseDate;
         mId = id;
@@ -34,11 +37,13 @@ public class MovieItem implements Parcelable {       //Parcel
     }
     private MovieItem(final Parcel in) {
         mPosterPath = in.readString();
+        mBackdropPath = in.readString();
         mOverview = in.readString();
         mReleaseDate = in.readString();
         mId = in.readString();
         mOriginalTitle = in.readString();
         mVoteAverage = in.readString();
+
     }
 
     @Override
@@ -49,18 +54,16 @@ public class MovieItem implements Parcelable {       //Parcel
     @Override
     public void writeToParcel(final Parcel dest, final int flag) {      //write to parcel
         dest.writeString(mPosterPath);
+        dest.writeString(mBackdropPath);
         dest.writeString(mOverview);
         dest.writeString(mReleaseDate);
         dest.writeString(mId);
         dest.writeString(mOriginalTitle);
         dest.writeString(mVoteAverage);
     }
-
-// --Commented out by Inspection START (08/02/17, 1:48 AM):
-//    public String getId() {
-//        return mId;
-//    }
-// --Commented out by Inspection STOP (08/02/17, 1:48 AM)
+    public String getId() {
+        return mId;
+    }
 
     public String getOriginalTitle() {
         return mOriginalTitle;
@@ -68,6 +71,9 @@ public class MovieItem implements Parcelable {       //Parcel
 
     public String getPosterPath() {
         return mPosterPath;
+    }
+    public String getBackdropPath() {
+        return mBackdropPath;
     }
 
     public String getOverview() {

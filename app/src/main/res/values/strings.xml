@@ -12,6 +12,6 @@
     <string name="toast_onItemSelected">Showing : </string>
     <string name="movies_collection_item_poster_content_description">Movie poster image.</string>
     <string name="movies_detail_poster_content_description">Movie Poster Image.</string>
-
+    <string name="movie_item_btn_favorite_desc">Save to Favourites.</string>
 
 </resources>

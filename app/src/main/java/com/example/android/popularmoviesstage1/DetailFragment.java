@@ -1,14 +1,18 @@
 package com.example.android.popularmoviesstage1;
 
+import android.content.ContentProvider;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.android.popularmoviesstage1.Data.MoviesProvider;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -49,10 +53,13 @@ public class DetailFragment extends Fragment {
         ((TextView) rootView.findViewById(R.id.movie_vote_avg)).setText(movie.getVoteAverage());
         ((TextView) rootView.findViewById(R.id.movie_overview)).setText(movie.getOverview());
         ((TextView) rootView.findViewById(R.id.movie_release_date)).setText(movie.getReleaseDate(true));
-        String url = movie.getPosterPath();
-        ImageView imageView = (ImageView) rootView.findViewById(R.id.movie_poster_image);
-        Picasso.with(getActivity()).load(url).placeholder(R.mipmap.ic_launcher).into(imageView);
-
+       // ((ImageButton) rootView.findViewById(R.id.movie_favorite_button).setSelected(boolean inactive));
+        ImageView poster = (ImageView) rootView.findViewById(R.id.movie_poster_image);
+        Picasso.with(getActivity()).load(movie.getPosterPath()).placeholder(R.mipmap.ic_launcher).into(poster);
+        ImageView backdrop = (ImageView) rootView.findViewById(R.id.movie_backdrop_image);
+        Picasso.with(getActivity()).load(movie.getBackdropPath()).placeholder(R.mipmap.ic_launcher).into(backdrop);
         return rootView;
     }
+
+
 }
